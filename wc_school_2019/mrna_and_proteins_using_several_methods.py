@@ -17,7 +17,7 @@ import numpy
 import os
 
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'docs', 'cell_modeling', 'simulation')
+OUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 #:obj:`str`: directory to save graphs
 
 
@@ -61,8 +61,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: mRNA synthesis rate (molecules h\ :sup:`-1`)
         """
-        # Todo: return the mRNA synthesis rate
-        pass
+        return self.k_m
 
     def r_n_syn(self, m, n):
         """ Calculate the protein synthesis rate
@@ -74,8 +73,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: protein synthesis rate (molecules h\ :sup:`-1`)
         """
-        # Todo: return the protein synthesis rate
-        pass
+        return m * self.k_n
 
     def r_m_deg(self, m, n):
         """ Calculate the mRNA degradation rate
@@ -87,8 +85,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: mRNA degradation rate (molecules h\ :sup:`-1`)
         """
-        # Todo: return the mRNA degradation rate
-        pass
+        return m * self.gamma_m
 
     def r_n_deg(self, m, n):
         """ Calculate the protein degradation rate
@@ -100,8 +97,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: protein degradation rate (molecules h\ :sup:`-1`)
         """
-        # Todo: return the protein degradation rate
-        pass
+        return n * self.gamma_n
 
     # species differentials
     def dm_dt(self, m, n):
@@ -114,8 +110,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: rate of change of mRNA (molecules h\ :sup:`-1`)
         """
-        # Todo: return the rate of change of mRNA
-        pass
+        return self.r_m_syn(m, n) - self.r_m_deg(m, n)
 
     def dn_dt(self, m, n):
         """ Calculate the rate of change of proteins
@@ -127,8 +122,7 @@ class OdeSimulation(object):
         Returns:
             :obj:`float`: rate of change of proteins (molecules h\ :sup:`-1`)
         """
-        # Todo: return the rate of change of proteins
-        pass
+        return self.r_n_syn(m, n) - self.r_n_deg(m, n)
 
     # vector form
     def dx_dt(self, x):
@@ -301,9 +295,10 @@ def deterministic_exercise():
     # Plot the vector field
     ##########################################################
     fig = sim.plot_vector_field()
-    # fig.show()
+    fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-deterministic-vector-field.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote vector field in '{}'".format(filename))
     pyplot.close(fig)
 
     ##########################################################
@@ -322,9 +317,10 @@ def deterministic_exercise():
     t, m, n = sim.simulate(t_end=100, t_step=1)
 
     fig = sim.plot_simulation_results(t, m, n)
-    # fig.show()
+    fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-deterministic-simulation.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote simulation results in '{}'".format(filename))
     pyplot.close(fig)
 
 

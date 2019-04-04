@@ -295,7 +295,7 @@ def deterministic_exercise():
     # Plot the vector field
     ##########################################################
     fig = sim.plot_vector_field()
-    fig.show()
+    # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-deterministic-vector-field.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
     print("wrote vector field in '{}'".format(filename))
@@ -317,7 +317,7 @@ def deterministic_exercise():
     t, m, n = sim.simulate(t_end=100, t_step=1)
 
     fig = sim.plot_simulation_results(t, m, n)
-    fig.show()
+    # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-deterministic-simulation.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
     print("wrote simulation results in '{}'".format(filename))
@@ -987,6 +987,7 @@ def trajectory_exercise():
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-simulation.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote 1 trajectory in '{}'".format(filename))
     pyplot.close(fig)
 
     ##########################################################
@@ -1001,6 +1002,7 @@ def trajectory_exercise():
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-simulations.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote multiple trajectories in '{}'".format(filename))
     pyplot.close(fig)
 
     ##########################################################
@@ -1010,10 +1012,12 @@ def trajectory_exercise():
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-average.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote the average of multiple trajectories in '{}'".format(filename))
     pyplot.close(fig)
 
     fig = sim.plot_mrna_protein_distribution(m, n)
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-histogram.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote the distribution in '{}'".format(filename))
     pyplot.close(fig)

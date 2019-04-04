@@ -801,7 +801,7 @@ class SsaSimulation(object):
             # update the time
             t += dt
 
-            # todo: update the copy numbers based on the selected reaction
+            # Todo: update the copy numbers based on the selected reaction
 
             # store copy number history
             m_hist[t < t_hist] = m

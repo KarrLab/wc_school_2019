@@ -1,2 +1,1 @@
 cement # for command line programs
-git+https://github.com/KarrLab/wc_utils.git#egg=wc_utils-0.0.1[all]

@@ -17,7 +17,7 @@ import numpy
 import os
 
 
-OUT_DIR = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'docs', 'cell_modeling', 'simulation')
+OUT_DIR = os.path.join(os.path.dirname(__file__), 'results')
 #:obj:`str`: directory to save graphs
 
 
@@ -755,7 +755,7 @@ class SsaSimulation(object):
         Args:
             t_0 (:obj:`float`, optional): initial time (h)
             t_end (:obj:`float`, optional): end time (h)
-            t_step (:obj:`float`, optional): frequency at which to record predicted mRNA and proteins
+            t_step (:obj:`float`, optional): period at which to record predicted mRNA and proteins (h)
 
         Return:
             :obj:`tuple`:
@@ -777,6 +777,12 @@ class SsaSimulation(object):
 
         # iterate over time
         while t < t_hist[-1]:
+            # reactions
+            # 0: mRNA synthesis
+            # 1: mRNA degradation
+            # 2: protein synthesis
+            # 3: protein degradation
+
             # calculate reaction properties/rates
             propensities = numpy.array([
                 self.r_m_syn(m, n),
@@ -786,7 +792,7 @@ class SsaSimulation(object):
             ])
             total_propensity = numpy.sum(propensities)
 
-            # select the length of the time step from an exponential distributuon
+            # obtain the length of the time step by sampling an exponential distribution
             dt = numpy.random.exponential(1. / total_propensity)
 
             # select the next reaction to fire
@@ -795,15 +801,7 @@ class SsaSimulation(object):
             # update the time
             t += dt
 
-            # update the copy numbers based on the selected reaction
-            if i_reaction == 0:
-                m += 1
-            elif i_reaction == 1:
-                m -= 1
-            elif i_reaction == 2:
-                n += 1
-            else:
-                n -= 1
+            # todo: update the copy numbers based on the selected reaction
 
             # store copy number history
             m_hist[t < t_hist] = m
@@ -991,6 +989,7 @@ def trajectory_exercise():
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-simulation.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote trajectory simulation plot: {}".format(filename))
     pyplot.close(fig)
 
     ##########################################################
@@ -1005,6 +1004,7 @@ def trajectory_exercise():
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-simulations.png')
     fig.savefig(filename, transparent=True, bbox_inches='tight')
+    print("wrote trajectory simulations plot: {}".format(filename))
     pyplot.close(fig)
 
     ##########################################################
@@ -1013,11 +1013,13 @@ def trajectory_exercise():
     fig = sim.plot_average_trajectory(t, m, n)
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-average.png')
+    print("wrote average trajectory plot: {}".format(filename))
     fig.savefig(filename, transparent=True, bbox_inches='tight')
     pyplot.close(fig)
 
     fig = sim.plot_mrna_protein_distribution(m, n)
     # fig.show()
     filename = os.path.join(OUT_DIR, 'mrna-and-protein-using-several-methods-trajectory-histogram.png')
+    print("wrote mrna_protein_distribution plot: {}".format(filename))
     fig.savefig(filename, transparent=True, bbox_inches='tight')
     pyplot.close(fig)

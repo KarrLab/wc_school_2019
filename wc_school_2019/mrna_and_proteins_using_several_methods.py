@@ -1,6 +1,7 @@
 """ Stochastic simulation tutorial
 
 :Author: Jonathan Karr <jonrkarr@gmail.com>
+:Author: Arthur Goldberg, Arthur.Goldberg@mssm.edu
 :Date: 2017-08-30
 :Copyright: 2017, Karr Lab
 :License: MIT

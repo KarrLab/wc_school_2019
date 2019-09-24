@@ -832,13 +832,14 @@ class SsaSimulation(object):
 
         return (t, m, n)
 
-    def plot_trajectories(self, t, m, n):
+    def plot_trajectories(self, t, m, n, label=None):
         """ Plot multiple trajectories
 
         Args:
             t (:obj:`numpy.array`): simulation time (h)
             m (:obj:`numpy.array`): predicted mRNA (molecules)
             n (:obj:`numpy.array`): predicted proteins (molecules)
+            label (:obj:`str`): label to write in plot
 
         Return:
             :obj:`matplotlib.figure.Figure`: figure
@@ -864,6 +865,12 @@ class SsaSimulation(object):
         axes[1].set_xlabel('Time (h)')
         axes[0].set_ylabel('mRNA (molecules)')
         axes[1].set_ylabel('Protein (molecules)')
+
+        if label:
+            offset = 0.02
+            for ax in axes:
+                ax.text(offset, 1-offset, label, horizontalalignment='left',
+                    verticalalignment='top', transform=ax.transAxes)
 
         return fig
 
@@ -1021,3 +1028,31 @@ def trajectory_exercise():
     fig.savefig(filename, transparent=True, bbox_inches='tight')
     print("wrote the distribution in '{}'".format(filename))
     pyplot.close(fig)
+
+def evaluate_bursts():
+
+    ###########################################################################
+    # Simulate multiple trajectories for multiple parameter changes
+    ###########################################################################
+    n_trajectories = 1
+    parameter_change_factors = [0.2, 1, 5]
+    initial_params = dict(k_m=5, k_n=20, gamma_m=numpy.log(2) * 60 / 3, gamma_n=numpy.log(2) / 10)
+    for param in ['k_m', 'gamma_m', 'k_n', 'gamma_n']:
+
+        for parameter_change_factor in parameter_change_factors:
+            kwargs = initial_params.copy()
+            kwargs[param] = parameter_change_factor * initial_params[param]
+            sim = SsaSimulation(**kwargs)
+    
+            # simulate
+            t, m, n = sim.simulate_ensemble(n_trajectories, t_end=5., t_step=0.001)
+
+            # plot
+            fig = sim.plot_trajectories(t, m, n,
+                label='{}={} * default (default={:.2e})'.format(param, parameter_change_factor, initial_params[param]))
+            # fig.show()
+            filename = os.path.join(OUT_DIR,
+                'mrna-and-protein-using-several-methods-trajectory-simulations-{}-{}.png'.format(param, parameter_change_factor))
+            fig.savefig(filename, transparent=True, bbox_inches='tight')
+            # print("wrote multiple trajectories in '{}'".format(filename))
+            pyplot.close(fig)
